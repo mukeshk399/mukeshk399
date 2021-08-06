@@ -1,0 +1,19 @@
+https://www.manning.com/books/learn-windows-powershell-in-a-month-of-lunches-second-edition
+https://docs.microsoft.com/en-us/powershell/scripting/learn/remoting/ps-remoting-second-hop?view=powershell-7.1
+https://devblogs.microsoft.com/scripting/enable-powershell-second-hop-functionality-with-credssp/
+
+# This works without delegation, passing fresh creds
+# Note $Using:Cred in nested request
+$cred = Get-Credential Contoso\Administrator
+Invoke-Command -ComputerName ServerB -Credential $cred -ScriptBlock {
+    hostname
+    Invoke-Command -ComputerName ServerC -Credential $Using:cred -ScriptBlock {hostname}
+}
+
+-------------
+
+Enable-WSManCredSSP -Role Client -DelegateComputer *.iammred.net -Force
+Enable-WSManCredSSP -Role Client -DelegateComputer
+
+Enable-WSMaCredSSP -Role Server –Force
+
